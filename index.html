@@ -3,60 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profixio Matches Embed – No Backend</title>
+  <title>Profixio Matches – Many Fallbacks</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    iframe, object, embed {
-      flex: 1;
-      border: none;
-      width: 100%;
-    }
-    .fallback {
-      flex: 1;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    .container { width: 100%; height: 100vh; display: flex; flex-direction: column; }
+    iframe, object, embed { flex: 1; border: none; width: 100%; }
+    .fallback { flex: 1; display: none; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+    .static img { max-width: 100%; height: auto; border: 1px solid #ddd; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Attempt iframe embed -->
+    <!-- Try iframe -->
     <iframe id="frame1" src="https://www.profixio.com/app/tournaments?term=&filters[open_registration]=0&filters[kampoppsett]=0&filters[land_id]=se&filters[type]=seriespill&filters[idrett]=HB&filters[listingtype]=matches&filters[season]=765&dateTo=2026-04-30&klubbid=26031&dateFrom=2025-08-16" loading="lazy"></iframe>
 
-    <!-- Fallback chain without backend -->
+    <!-- Fallback 1: object -->
     <object id="frame2" data="https://www.profixio.com/app/tournaments?term=&filters[open_registration]=0&filters[kampoppsett]=0&filters[land_id]=se&filters[type]=seriespill&filters[idrett]=HB&filters[listingtype]=matches&filters[season]=765&dateTo=2026-04-30&klubbid=26031&dateFrom=2025-08-16" style="display:none"></object>
 
+    <!-- Fallback 2: embed -->
     <embed id="frame3" src="https://www.profixio.com/app/tournaments?term=&filters[open_registration]=0&filters[kampoppsett]=0&filters[land_id]=se&filters[type]=seriespill&filters[idrett]=HB&filters[listingtype]=matches&filters[season]=765&dateTo=2026-04-30&klubbid=26031&dateFrom=2025-08-16" style="display:none"></embed>
 
-    <div id="frame4" class="fallback">⚠️ Direkt inbäddning blockeras av Profixio.<br><br>
-      <strong>Lösningar utan backend:</strong>
-      <ul style="text-align:left; max-width:600px;">
-        <li><b>Screenshot/Static Embed</b>: Ta en bild av sidan och bädda in som uppdateras manuellt.</li>
-        <li><b>RSS/JSON feed</b>: Om Profixio erbjuder datafeed kan du ladda in den med JavaScript och rendera matcher själv.</li>
-        <li><b>Embed via &lt;webview&gt;</b>: Endast i Electron/appen, inte i vanlig webbläsare.</li>
-        <li><b>Hidden iFrame + reload</b>: Ge illusion av embed (men interaktivitet blockeras).</li>
-        <li><b>Meta Refresh</b>: Tar användaren direkt till sidan inom din ram.</li>
-      </ul>
+    <!-- Fallback 3: Static screenshot placeholder -->
+    <div id="frame4" class="fallback static">
+      <p>⚠️ Direkt inbäddning blockeras. Här visas en statisk version av matchtabellen.</p>
+      <img src="static-matches.png" alt="Static match table">
     </div>
 
+    <!-- Fallback 4: Auto redirect -->
     <noscript>
       <meta http-equiv="refresh" content="0; url=https://www.profixio.com/app/tournaments?term=&filters[open_registration]=0&filters[kampoppsett]=0&filters[land_id]=se&filters[type]=seriespill&filters[idrett]=HB&filters[listingtype]=matches&filters[season]=765&dateTo=2026-04-30&klubbid=26031&dateFrom=2025-08-16">
     </noscript>
